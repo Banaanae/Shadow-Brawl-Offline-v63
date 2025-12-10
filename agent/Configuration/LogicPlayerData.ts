@@ -57,10 +57,12 @@ class LogicPlayerData {
 
 		if (Java.available) {
 			Java.perform(() => {
+				console.log("start")
 				const ActivityThread = Java.use("android.app.ActivityThread");
 				const app = ActivityThread.currentApplication();
 				const context = app.getApplicationContext();
 				this.DataPath = context.getFilesDir().getAbsolutePath() + "/config.json";
+				console.log("end")
 			});
 		} else if (ObjC.available) {
 			const nsFileManager = ObjC.classes.NSFileManager.defaultManager();
@@ -77,8 +79,10 @@ class LogicPlayerData {
 	}
 
 	public static Load() {
+		console.log("inside load")
 		let dataPath = this.GetDataPath();
 		let fileExists = false;
+		console.log("we set 2 vars gg")
 
 		// ✅ iOS / macOS path handling
 		if (ObjC.available) {
@@ -139,6 +143,7 @@ class LogicPlayerData {
 			// ✅ Android path handling
 		} else if (Java.available) {
 			Java.perform(() => {
+				console.log("made it to java branch")
 				const File = Java.use("java.io.File");
 				const FileInputStream = Java.use("java.io.FileInputStream");
 				const FileOutputStream = Java.use("java.io.FileOutputStream");
@@ -196,6 +201,8 @@ class LogicPlayerData {
 					Debugger.Warn("[LogicPlayerData::Load] Failed to read JSON (Java):", e);
 				}
 			});
+		} else {
+			console.log('wat')
 		}
 	}
 

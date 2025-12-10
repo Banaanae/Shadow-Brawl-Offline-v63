@@ -25,7 +25,7 @@ class Hooks {
         });
 
 
-        Interceptor.attach(Environment.LaserBase.add(0x4DD1B4), {
+        /*Interceptor.attach(Environment.LaserBase.add(0x4DD1B4), {
             onEnter: function(args) {
                 console.log("self.writePositiveInt(" + args[1].toInt32() + "," + args[2].toInt32() + ")")
             },
@@ -41,7 +41,7 @@ class Hooks {
             onEnter: function(args) {
                 console.log("self.writeInt(" + args[1].toInt32() + "," + args[2].toInt32() + ")")
             }
-        });
+        }); \*/
 
         /*Interceptor.attach(Environment.LaserBase.add(0x450668), {
             onEnter: function(args) {
@@ -69,15 +69,15 @@ class Hooks {
             }
         });
 
-        Interceptor.replace(Environment.LaserBase.add(0x38FDF0), new NativeCallback(function() { // LogicVersion::isDev
+        Interceptor.replace(Environment.LaserBase.add(0x86CF94), new NativeCallback(function() { // LogicVersion::isDev
             return 1;
         }, 'int', []));
 
-        Interceptor.replace(Environment.LaserBase.add(0xB62864), new NativeCallback(function() { // Messaging::decryptData
+        Interceptor.replace(Environment.LaserBase.add(0xC33B10), new NativeCallback(function() { // Messaging::decryptData
             return 1;
         }, 'int', []));
 
-        Interceptor.attach(Environment.LaserBase.add(0xB63060), { // Messaging::sendPepperAuthentication
+        Interceptor.attach(Environment.LaserBase.add(0x10C133C), { // Messaging::sendPepperAuthentication
 		    onEnter(args) {
 			    this.messaging = args[0];
                 console.warn("[+][PepperState::State][1] Pepper State Is", (Memory as any).readU32(this.messaging.add(24)));
@@ -92,7 +92,7 @@ class Hooks {
 		    }
 	    });
 
-        Interceptor.attach(Environment.LaserBase.add(0xB63744), function() { // Messaging::encryptAndWrite
+        Interceptor.attach(Environment.LaserBase.add(0xC34CF4), function() { // Messaging::encryptAndWrite
 		    (this.context as any).x0 = (this.context as any).x8;
 	    });
 
@@ -134,17 +134,17 @@ class Hooks {
             return 0;
         }, "int", ["pointer", "pointer"]));
 
-        Interceptor.replace(Environment.LaserBase.add(0xB61904), new NativeCallback(function() {
+        Interceptor.replace(Environment.LaserBase.add(0xC32C84), new NativeCallback(function() {
             return 1;
         }, 'int', []));
 
-        Interceptor.replace(Environment.LaserBase.add(0xB61928), new NativeCallback(function() {
+        Interceptor.replace(Environment.LaserBase.add(0xC32CA8), new NativeCallback(function() {
             return 5;
         }, 'int', []));
 
         // Misc Hooks
 
-        Interceptor.attach(Environment.LaserBase.add(0x325900), {
+        Interceptor.attach(Environment.LaserBase.add(0x7ECA28), {
             onEnter: function (args) {
                 args[3] = ptr(3); // Offline Battles
                 // args[6] = ptr(1); // Maxed Brawlers
@@ -164,7 +164,7 @@ class Hooks {
             }
         })*/
 
-        const StringTable__getString = new NativeFunction(Environment.LaserBase.add(0x3703C4), 'pointer', ['pointer']); // ill make it function from the func class later
+        const StringTable__getString = new NativeFunction(Environment.LaserBase.add(0x84580C), 'pointer', ['pointer']); // ill make it function from the func class later
 
         let AboutText = `╔════════════════════════╗
 <cff1f00>S<cff3f00>h<cff5f00>a<cff7f00>d<cff9f00>o<cffbf00>w<cffdf00> <cffff00>B<cfff000>r<cffe100>a<cffd200>w<cffc300>l<cffb400>┃<cffa500>S<cff9600>H<cff8800>B</c>
@@ -204,7 +204,7 @@ Version: ${Environment.script_version}
         }, 'pointer', ['pointer']));
 
 
-        Interceptor.attach(Environment.LaserBase.add(0x31D454), { // HomePage::HomePage
+        Interceptor.attach(Addresses.HomeMode_Enter, { // HomePage::HomePage
             onEnter: function(args) {
                 this.x = args[0];
             },
